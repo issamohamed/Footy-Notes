@@ -90,38 +90,3 @@ The transfer bento shows recent **confirmed** transfers from [API-Football](http
 
 **A cloner must supply their own free API-Football key.** No key ships in this repo.
 
-## Deploy (Cloudflare Pages)
-
-Static-only (recommended default):
-
-- Build command: `npm run build`
-- Build output directory: `frontend/dist`
-- Root directory: `frontend`
-
-Vite `base` is `/` because Cloudflare Pages serves from the root. `frontend/public/_redirects` handles SPA client routing.
-
-To enable the optional transfer Function, see `wrangler.toml`: bind a `TRANSFERS_KV` namespace, set the `API_FOOTBALL_KEY` secret and the `CLUB_TEAM_IDS` env var (the JSON contents of `pipeline/api_football_ids.json`), and build with `VITE_ENABLE_TRANSFER_REFRESH=true`.
-
-## Payload discipline
-
-- `clubs.json` is the light first paint file: aggregates only, no rosters or transfers, plus a tiny per club form sparkline array (rolling xG margin) for the landing-page table rows. About 44 KB for 96 clubs, well inside a comfortable budget.
-- `clubs/{id}.json` is heavy (full roster + best XI + per match rows + transfers) and loaded only when a club is opened (about 9 to 11 KB each), so its cost is paid per click. The per match rows (matchday, xG, xGA, points, opponent, result) power the form line chart and the stat card sparklines; about 38 small rows per club, a trivial addition.
-- Per player fields are trimmed to what the charts use; floats are rounded to 1 to 2 decimals. Cloudflare gzips responses automatically.
-
-## Known caveats
-
-- **FBref rate limits / blocking:** FBref blocks automated access, which is why the pipeline uses Understat. Documented above.
-- **Season snapshot, not live:** by design; the refresh path is re-running the pipeline.
-- **Formation is an approximation:** representative shape with best XI by minutes, not a specific match lineup.
-- **Position mapping:** line level only; lateral slotting within a line is presentational.
-- **Transfers:** confirmed transfers captured at pipeline run time, capped by API-Football's free 100/day quota, spent offline. Not a live rumour feed. The club page works fully without it.
-
-## Repo layout
-
-```
-footy_notes/
-  pipeline/     Python: scrape.py, transform.py, transfers.py, export.py, common.py
-  frontend/     React + TypeScript + Vite; D3 visualizations; public/data holds the JSON
-    functions/  optional Cloudflare Pages Function for live transfer refresh
-  wrangler.toml Cloudflare config for the optional Function
-```
