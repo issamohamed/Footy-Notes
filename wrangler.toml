@@ -1,0 +1,32 @@
+# Cloudflare Pages config for footy_notes.
+#
+# The core app is a static site (frontend/dist) and needs none of this. These
+# bindings only power the OPTIONAL transfer freshness Function
+# (frontend/functions/api/transfers/[clubId].ts). Skip this section entirely if
+# you deploy the static-only build.
+#
+# Deploy (static-only, recommended default):
+#   Build command:      npm run build
+#   Build output dir:    frontend/dist
+#   Root directory:      frontend
+#
+# To enable the optional Function:
+#   1. Create a KV namespace and bind it as TRANSFERS_KV (id below).
+#   2. Add the API_FOOTBALL_KEY secret (Pages project settings, encrypted).
+#   3. Add CLUB_TEAM_IDS as a plain env var: the JSON contents of
+#      pipeline/api_football_ids.json (clubId -> API-Football teamId).
+#   4. Build the frontend with VITE_ENABLE_TRANSFER_REFRESH=true.
+
+name = "footy-notes"
+pages_build_output_dir = "frontend/dist"
+
+# Bind a KV namespace for the optional Function. Replace the id with your own
+# from `wrangler kv namespace create TRANSFERS_KV`.
+[[kv_namespaces]]
+binding = "TRANSFERS_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# API_FOOTBALL_KEY is set as an encrypted secret, never here:
+#   wrangler pages secret put API_FOOTBALL_KEY
+# CLUB_TEAM_IDS is a non-secret env var set in the Pages dashboard or via:
+#   wrangler pages deployment ... (see README)

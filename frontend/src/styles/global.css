@@ -1,0 +1,238 @@
+/* footy_notes design system: sleek, sharp, glassmorphic telemetry.
+   Three deliberate planes: the ground (deep floodlit pitch), mid-layer UI, and
+   the elevated hero surfaces (comparison scatter, tactics board). Depth, not
+   colour saturation, does the work. One accent: floodlight white-blue. */
+
+:root {
+  /* ground */
+  --bg-0: #060b10;
+  --bg-1: #0a141b;
+  --bg-2: #0d1a22;
+  --floodlight: rgba(94, 173, 210, 0.16);
+
+  /* glass surfaces (over the dark ground) */
+  --glass-fill: rgba(255, 255, 255, 0.055);
+  --glass-fill-strong: rgba(255, 255, 255, 0.085);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-rim: rgba(255, 255, 255, 0.28); /* top-edge highlight */
+  --scrim: rgba(6, 11, 16, 0.55); /* behind text over glass */
+
+  /* text */
+  --ink: #eaf3f7;
+  --ink-dim: #a9bcc6;
+  --ink-faint: #6f8593;
+
+  /* accent: floodlight white-blue. Earned, not default: used only for the
+     hovered / selected / emphasized element. */
+  --accent: #5ec8f0;
+  --accent-strong: #8fe0ff;
+  --accent-glow: rgba(94, 200, 240, 0.45);
+
+  /* DATA marks default to near-monochrome cool slate at low opacity. Colour is
+     added back only on hover/emphasis. These are the only fills a chart should
+     use at rest. */
+  --data: rgba(198, 214, 224, 0.34);
+  --data-strong: rgba(210, 226, 236, 0.6);
+  --data-ghost: rgba(198, 214, 224, 0.08); /* out-of-filter context marks */
+  --data-dim: rgba(198, 214, 224, 0.12);   /* non-hovered marks while hovering */
+  --data-line: rgba(210, 226, 236, 0.16);  /* faint gridlines */
+  --data-ref: rgba(210, 226, 236, 0.22);   /* quadrant / reference lines */
+
+  /* semantic divergent pair, deliberately desaturated (over/under performance) */
+  --good: #6fbf9a;
+  --bad: #d98a95;
+
+  /* ground extras + control fills + title gradient (tokenised so light mode can
+     override them cleanly) */
+  --bg-deep: #04080b;                          /* darkest gradient stop */
+  --motif: rgba(255, 255, 255, 0.028);         /* faint pitch-motif lines */
+  --control-fill: rgba(255, 255, 255, 0.05);   /* small interactive controls */
+  --control-fill-strong: rgba(255, 255, 255, 0.09);
+  --surface-faint: rgba(255, 255, 255, 0.02);  /* barely-there tints */
+  --title-from: #ffffff;
+  --title-to: #b7d6e4;
+
+  /* depth */
+  --shadow-lift: 0 18px 50px -18px rgba(0, 0, 0, 0.75);
+  --shadow-hero: 0 34px 90px -28px rgba(0, 0, 0, 0.85);
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Space Grotesk", ui-monospace, "SFMono-Regular", monospace;
+  --font-title: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+/* ---- light theme: a bright, airy ground with the same three planes and the
+   one floodlight accent, retuned for contrast on light surfaces ---- */
+:root[data-theme="light"] {
+  --bg-0: #eef2f6;
+  --bg-1: #f6f9fb;
+  --bg-2: #e8eef3;
+  --bg-deep: #dfe7ee;
+  --floodlight: rgba(70, 150, 195, 0.18);
+
+  --glass-fill: rgba(255, 255, 255, 0.62);
+  --glass-fill-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(22, 45, 62, 0.14);
+  --glass-rim: rgba(255, 255, 255, 0.9);
+  --scrim: rgba(255, 255, 255, 0.82);
+
+  --ink: #16242e;
+  --ink-dim: #46596a;
+  --ink-faint: #7a8b98;
+
+  --accent: #1487b4;
+  --accent-strong: #0d6f97;
+  --accent-glow: rgba(20, 135, 180, 0.32);
+
+  --data: rgba(34, 58, 74, 0.42);
+  --data-strong: rgba(26, 46, 60, 0.72);
+  --data-ghost: rgba(34, 58, 74, 0.1);
+  --data-dim: rgba(34, 58, 74, 0.14);
+  --data-line: rgba(26, 46, 60, 0.1);
+  --data-ref: rgba(26, 46, 60, 0.2);
+
+  --good: #2b9a6b;
+  --bad: #c1535f;
+
+  --motif: rgba(22, 45, 62, 0.05);
+  --control-fill: rgba(22, 45, 62, 0.05);
+  --control-fill-strong: rgba(22, 45, 62, 0.09);
+  --surface-faint: rgba(22, 45, 62, 0.025);
+  --title-from: #12303f;
+  --title-to: #2f6a86;
+
+  --shadow-lift: 0 18px 46px -20px rgba(30, 55, 78, 0.22);
+  --shadow-hero: 0 34px 84px -30px rgba(30, 55, 78, 0.28);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg-0);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "tnum" 1, "cv01" 1; /* tabular figures */
+}
+
+/* the ground: non-uniform, with a floodlight pool and a whisper-quiet pitch
+   motif (centre circle + halfway line) rendered as low-opacity background. */
+.ground {
+  position: relative;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 720px at 50% -8%, var(--floodlight), transparent 60%),
+    radial-gradient(900px 700px at 88% 12%, rgba(80, 130, 160, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 42%, var(--bg-deep) 100%);
+  overflow-x: clip;
+}
+.ground::before {
+  /* pitch motif, barely there */
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 50% 30%, transparent 0, transparent 118px, var(--motif) 119px, transparent 121px),
+    linear-gradient(90deg, transparent calc(50% - 0.5px), var(--motif) 50%, transparent calc(50% + 0.5px));
+  background-repeat: no-repeat;
+  background-position: center 0;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 28px 96px;
+}
+
+/* ---- glass surfaces ---- */
+.glass {
+  position: relative;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  box-shadow: var(--shadow-lift);
+}
+/* .panel: same visual language as glass (tint, hairline, rim, lift) but WITHOUT
+   backdrop-filter, so secondary cells cost no GPU blur. Reserve real .glass for
+   the hero surfaces (scatter, tactics board) to keep blurred layers to a
+   minimum. Over the near-black ground the two read almost identically. */
+.panel {
+  position: relative;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+}
+
+/* top-edge rim highlight: light catching the glass */
+.glass::before,
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding-top: 1px;
+  background: linear-gradient(180deg, var(--glass-rim), transparent 34%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.glass--hero {
+  background: var(--glass-fill-strong);
+  box-shadow: var(--shadow-hero);
+}
+
+/* lift-on-hover for interactive floating elements */
+.lift {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hero);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ---- typography helpers ---- */
+.display { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+a { color: inherit; text-decoration: none; }
+
+/* ---- focus visibility ---- */
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .lift:hover { transform: none; }
+}
+
+/* ---- small screens ---- */
+@media (max-width: 720px) {
+  .shell { padding: 24px 16px 72px; }
+}

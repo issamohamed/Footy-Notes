@@ -1,0 +1,39 @@
+.flc { padding: 20px 20px 14px; border-radius: var(--radius); }
+.flc__head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.flc__title { font-size: 18px; margin: 3px 0 0; }
+.flc__legend { display: flex; gap: 14px; font-family: var(--font-display); font-size: 11.5px; color: var(--ink-dim); }
+.flc__key { display: inline-flex; align-items: center; gap: 6px; }
+.flc__swatch { width: 14px; height: 2px; border-radius: 2px; display: inline-block; }
+.flc__swatch.is-xg { background: var(--accent); }
+.flc__swatch.is-xga { background: var(--data-strong); }
+
+.flc__wrap { position: relative; }
+.flc__svg { display: block; width: 100%; overflow: visible; }
+.flc__grid line { stroke: var(--data-line); stroke-width: 1; shape-rendering: crispEdges; }
+.flc__axis text { fill: var(--ink-faint); font-size: 10px; font-family: var(--font-mono); }
+.flc__axistitle { fill: var(--ink-faint); font-family: var(--font-display); font-size: 9.5px; letter-spacing: 0.16em; }
+
+.flc__line { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.flc__line.is-xg { stroke: var(--accent); filter: drop-shadow(0 0 4px var(--accent-glow)); }
+.flc__line.is-xga { stroke: var(--data-strong); }
+
+.flc__hover line { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 2 4; opacity: 0.6; }
+.flc__hover circle.is-xg { fill: var(--accent); }
+.flc__hover circle.is-xga { fill: var(--data-strong); }
+
+.flc__tip {
+  position: absolute; z-index: 5; min-width: 132px;
+  padding: 9px 11px; border-radius: var(--radius-sm);
+  pointer-events: none; background: var(--scrim);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.flc__tip-md { font-size: 11px; color: var(--accent); }
+.flc__tip-opp { font-size: 12.5px; color: var(--ink); margin: 2px 0 6px; }
+.flc__tip-vals { display: flex; flex-direction: column; gap: 2px; font-size: 11.5px; }
+.flc__tip-vals .is-xg { color: var(--accent); }
+.flc__tip-vals .is-xga { color: var(--ink-dim); }
+
+.flc__empty { color: var(--ink-faint); font-size: 12px; padding: 24px 4px; font-family: var(--font-display); }

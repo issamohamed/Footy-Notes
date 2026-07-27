@@ -1,0 +1,4 @@
+# Local dev secret for the optional transfer Function. Copy to .dev.vars and
+# supply your own free API-Football key. .dev.vars is gitignored; never commit a key.
+API_FOOTBALL_KEY = "your-free-api-football-key"
+CLUB_TEAM_IDS = "{}"

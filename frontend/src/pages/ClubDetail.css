@@ -1,0 +1,79 @@
+.cd-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.cd-topbar__right { display: flex; align-items: center; gap: 10px; }
+.cd-back {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--ink-dim);
+  transition: color 140ms ease;
+}
+.cd-back:hover { color: var(--accent); }
+
+.cd-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.cd-crest {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  flex: 0 0 auto;
+  background: var(--club);
+  box-shadow: 0 0 24px -4px var(--club), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.cd-title {
+  font-size: clamp(30px, 5vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 4px 0 6px;
+  line-height: 1;
+}
+.cd-meta { font-size: 13px; color: var(--accent); }
+
+/* bento: deliberately varied cell sizes.
+   stats strip on top, tall tactics board on the left spanning the player chart
+   and form chart on the right, transfers full width at the bottom. */
+.cd-bento {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  grid-template-areas:
+    "stats stats"
+    "pitch player"
+    "pitch form"
+    "transfers transfers";
+  gap: 16px;
+}
+.cd-cell { min-width: 0; }
+.cd-cell--stats { grid-area: stats; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.cd-cell--pitch { grid-area: pitch; }
+.cd-cell--player { grid-area: player; }
+.cd-cell--form { grid-area: form; }
+.cd-cell--transfers { grid-area: transfers; }
+
+/* make the left column (tactics board) and right column stack sensibly */
+.cd-cell--pitch > .pitch { height: 100%; }
+
+@media (max-width: 820px) {
+  .cd-bento {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "pitch"
+      "stats"
+      "player"
+      "form"
+      "transfers";
+  }
+  .cd-cell--stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .cd-cell--stats { grid-template-columns: repeat(2, 1fr); }
+}

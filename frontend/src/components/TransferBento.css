@@ -1,0 +1,44 @@
+.tb { padding: 20px; border-radius: var(--radius); }
+.tb__head { margin-bottom: 14px; }
+.tb__src { margin: 6px 0 0; font-size: 11.5px; color: var(--ink-faint); max-width: 520px; line-height: 1.5; }
+
+.tb__empty {
+  padding: 34px 18px;
+  text-align: center;
+  color: var(--ink-faint);
+  font-family: var(--font-display);
+  font-size: 14px;
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-faint);
+}
+
+.tb__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.tb__cell {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-left-width: 3px;
+}
+.tb__cell.is-in { border-left-color: var(--good); }
+.tb__cell.is-out { border-left-color: var(--bad); }
+
+.tb__dir {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.tb__arrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.05em; }
+.is-in .tb__arrow { color: var(--good); }
+.is-out .tb__arrow { color: var(--bad); }
+.tb__fee { font-size: 11px; color: var(--ink-dim); }
+
+.tb__player { font-size: 15px; line-height: 1.2; }
+.tb__club { font-size: 12.5px; color: var(--ink-dim); margin-top: 3px; }
+.tb__date { font-size: 11px; color: var(--ink-faint); margin-top: 6px; }
